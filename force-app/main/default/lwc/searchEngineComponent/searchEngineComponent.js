@@ -37,7 +37,7 @@ isDataPresent=false;
 isShow=false;
 
 @wire(getAllRecord, { objectName:'$objectName',fieldNames:'$fieldNames',RecordLimit:'$RecordLimit'})
-wiredRecords(result) {
+wiredAccounts(result) {
     this.isLoading=true;
     this.wiredAccountList = result;
     if (result.data) { 
@@ -121,7 +121,7 @@ displayRecordPerPage(page){
     this.startingRecord = ((page -1) * this.pageSize) ;
     this.endingRecord = (this.pageSize * page);
 
-    this.endingRecord = (this.endingr7Record > this.totalRecountCount) 
+    this.endingRecord = (this.endingRecord > this.totalRecountCount) 
                         ? this.totalRecountCount : this.endingRecord; 
 
     this.data = this.items.slice(this.startingRecord, this.endingRecord);
