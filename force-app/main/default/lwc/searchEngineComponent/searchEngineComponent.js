@@ -1,7 +1,7 @@
 import { LightningElement, wire, api, track} from 'lwc';
 import { refreshApex } from '@salesforce/apex';
 import getAllRecord from '@salesforce/apex/SearchEngineApexController.getAllRecord';
-import UpdateObject from '@salesforce/apex/SearchEngineApexController.UpdateObject';
+import updateObject from '@salesforce/apex/SearchEngineApexController.updateObject';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class searchEngineComponent extends LightningElement {
@@ -37,7 +37,7 @@ isDataPresent=false;
 isShow=false;
 
 @wire(getAllRecord, { objectName:'$objectName',fieldNames:'$fieldNames',RecordLimit:'$RecordLimit'})
-wiredAccounts(result) {
+wiredRecords(result) {
     this.isLoading=true;
     this.wiredAccountList = result;
     if (result.data) { 
@@ -173,7 +173,7 @@ async handleSave(event) {
     updatedFields.map(row => { return { "recordId": row.Id } });
     try {
         // Pass edited fields to the updateContacts Apex controller
-        UpdateObject({dataToUpdate: updatedFields})
+        updateObject({dataToUpdate: updatedFields})
         .then(result => {
             if(result=='Success'){
                 this.isLoading=false;

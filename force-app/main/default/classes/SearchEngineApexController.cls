@@ -1,19 +1,17 @@
 public with sharing class SearchEngineApexController {
-    public SearchEngineApexController() {
-        
-    }
     /**This Method fetches the all records of an object**/
     @AuraEnabled(cacheable=true)
     public static SearchEngineApexController.ObjectDetailsWrapper getAllRecord(String objectName,String fieldNames,String RecordLimit) {
         List<sObject> sobjList;
         SearchEngineApexController.ObjectDetailsWrapper wrapperObj=new SearchEngineApexController.ObjectDetailsWrapper();
         try{
-			String query = 'SELECT '+fieldNames+'  FROM '+objectName+' LIMIT '+RecordLimit;
-            System.debug('query:'+query);
-			sobjList = Database.query( query );
-            wrapperObj.objName=objectName;
-            wrapperObj.allRecords=sobjList;
-			wrapperObj.allFieldsDetail=prepareFieldDetailsWrapper(objectName,fieldNames);
+           if(objectName!=null && objectName!='' && fieldNames!=null && fieldNames!=null &&  RecordLimit!=null && RecordLimit!='' ){
+               String query = 'SELECT '+fieldNames+'  FROM '+objectName+' LIMIT '+RecordLimit;
+               sobjList = Database.query( query );
+               wrapperObj.objName=objectName;
+               wrapperObj.allRecords=sobjList;
+               wrapperObj.allFieldsDetail=prepareFieldDetailsWrapper(objectName,fieldNames);
+           }
         }catch(Exception e){
             System.debug('Error Line Number:'+e.getLineNumber()+'Error Message'+e.getMessage());
         }
@@ -21,12 +19,13 @@ public with sharing class SearchEngineApexController {
     }    
     /**This Method basically used to perform update in object**/
     @AuraEnabled
-    public static String UpdateObject(List<sobject> dataToUpdate) {
-        //System.debug('data==>'+data);
-        //List<sobject> updateForObject = (List<sobject>) JSON.deserialize(JSON.serialize(data),List<sobject>.class);
+    public static String updateObject(List<sobject> dataToUpdate) {
         try {
-            update dataToUpdate;
-            return 'Success';
+            if(dataToUpdate!=null){
+                update dataToUpdate;
+                return 'Success';
+            }
+            return null;
         }
         catch (Exception e) {
                 System.debug('Error Line Number:'+e.getLineNumber()+'Error Message'+e.getMessage());
@@ -59,7 +58,6 @@ public with sharing class SearchEngineApexController {
         try{
             if(!String.IsBlank(ObjectApi) && !String.IsBlank(FieldApi)){
                 labelName=(String)Schema.getGlobalDescribe().get(ObjectApi).getDescribe().fields.getMap().get(FieldApi).getDescribe().getLabel();
-                System.debug('FieldApi:'+FieldApi+'LabelName:'+labelName);
             }
         }catch(Exception e){
             System.debug('Error Line Number:'+e.getLineNumber()+'Error Message'+e.getMessage());
