@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>SearchEngineApexController</members>
+        <members>SearchEngineApexControllerTest</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>searchEngineComponent</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <version>54.0</version>
+</Package>
